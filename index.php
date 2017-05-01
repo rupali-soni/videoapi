@@ -18,22 +18,11 @@ function login() {
 	$json = array();
 	$request = $apps->request();
 	$body = $request->post();
-	$sql = "CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(70) NOT NULL,
-  `device_id` varchar(100) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
-	";
+	$sql = "SELECT * from users WHERE username=:username";
 	$db = getDB();
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam("username", $body['username']);
 	$stmt->execute();
-	die('done');
 	$existUser = $stmt->fetchAll(PDO::FETCH_OBJ);
 	if(count($existUser)) {
 		$sql = "SELECT * from users WHERE username=:username AND password=:password";
